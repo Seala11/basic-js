@@ -50,7 +50,6 @@ function renameFiles(names) {
     }
   }
 
-  console.log(uniqueNames);
   return uniqueNames;
 }
 
