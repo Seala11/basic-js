@@ -23,11 +23,56 @@ const { NotImplementedError } = require('../extensions/index.js');
  *  [1, 1, 1]
  * ]
  */
-function minesweeper(/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+function minesweeper(matrix) {
+  let rows = matrix.length;
+  let columns = matrix[0].length;
+
+  if (rows === 0) return matrix;
+
+  // set a new matrix with rows to return
+  let newMat = new Array(matrix.length)
+  
+  for (let i = 0; i < rows; i++) {
+      newMat[i] = new Array(columns).fill(0) // set columns of new matrix
+  }
+
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+      if (matrix[i][j] !== true) {
+        newMat[i][j] = bombCount(matrix, i, j)
+      } else {
+        newMat[i][j] = bombCount(matrix, i, j) - 1; // minus itself
+      }
+    }
+  }
+
+  return newMat;
+}
+
+const bombCount = (matrix, i, j) => {
+  let count = 0;
+
+  let rows = [matrix[i - 1], matrix[i], matrix[i + 1]] // prev current next rows
+
+  rows.forEach(row => { 
+    if (row) { // if there is a bomb near
+      if (row[j - 1] === true) count++;
+      if (row[j] === true) count++;
+      if (row[j + 1] === true) count++;
+    }
+  })
+
+  return count;
 }
 
 module.exports = {
-  minesweeper
+  minesweeper,
 };
+
+// const matrix = [
+//   [true, false, false],
+//   [false, true, false],
+//   [false, false, false],
+// ];
+
+// minesweeper(matrix);
